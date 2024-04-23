@@ -14,7 +14,7 @@ result = {
 }
 
 def get_data_for_date(message):
-    file = open('datchik.json', 'r', encoding='utf-8')
+    file = open('data_example.json', 'r', encoding='utf-8')
     data = json.load(file)
     file.close()
     for i in range(len(data)):
@@ -40,15 +40,13 @@ def get_message(message):
             scope=types.BotCommandScopeChat(message.chat.id)
         )
 
+        file = open('data_example.json', 'r', encoding='utf-8')
+        data = json.load(file)
+        file.close()
         keyboard = types.InlineKeyboardMarkup()
-        button1 = types.InlineKeyboardButton(text='Кислородно-газовый', callback_data='Кислородно-газовый')
-        button2 = types.InlineKeyboardButton(text='АСУТП', callback_data='АСУТП')
-        button3 = types.InlineKeyboardButton(text='Колесобандажный', callback_data='Колесобандажный')
-        button4 = types.InlineKeyboardButton(text='Конверторный', callback_data='Конверторный')
-        button5 = types.InlineKeyboardButton(text='УЖДТ', callback_data='УЖДТ')
-
-        keyboard.add(button1, button2, button3, button4, button5)
-
+        for department in list(data.keys()):
+            button = types.InlineKeyboardButton(text=department, callback_data=department)
+            keyboard.add(button)
         bot.send_message(message.from_user.id, text='Добро пожаловать!')
         bot.send_message(message.from_user.id, text='Выберите цех, из которого вы хотите получить данные с датчиков', reply_markup=keyboard)
 
@@ -57,31 +55,18 @@ def get_message(message):
 def callback_worker(call):
     global active_department
 
-    file = open('datchik.json', 'r', encoding='utf-8')
+    file = open('data_example.json.json', 'r', encoding='utf-8')
     data = json.load(file)
     file.close()
-    departments = []
-    for i in range(len(data)):
-        if data[i]['department'] not in departments:
-            departments.append(data[i]['department'])
+    keyboard2 = types.InlineKeyboardMarkup()
+    for department in list(data[active_department].keys()):
+        button1_2 = types.InlineKeyboardButton(text=department, callback_data=department)
+        keyboard2.add(button1_2)
+    bot.send_message(message.from_user.id, text='Выберите ленту для просмотра', reply_markup=keyboard2)
 
-    for department in departments:
-        if call.data == department:
-            result["department"] = department
-            active_department = department
-            bot.send_message(call.from_user.id, text='Вы выбрали ' + call.data)
-            keyboard2 = types.InlineKeyboardMarkup()
-            button1_2 = types.InlineKeyboardButton(text='Лента №1', callback_data='Лента №1')
-            button2_2 = types.InlineKeyboardButton(text='Лента №2', callback_data='Лента №2')
-            button3_2 = types.InlineKeyboardButton(text='Лента №3', callback_data='Лента №3')
-            button4_2 = types.InlineKeyboardButton(text='Лента №4', callback_data='Лента №4')
-            button5_2 = types.InlineKeyboardButton(text='Лента №5', callback_data='Лента №5')
-            keyboard2.add(button1_2, button2_2, button3_2, button4_2, button5_2)
-            bot.send_message(call.from_user.id, text='Выберите ленту для просмотра', reply_markup=keyboard2)
-            break
 
     if call.data.startswith('Лента'):
-        file = open('datchik.json', 'r', encoding='utf-8')
+        file = open('data_example.json', 'r', encoding='utf-8')
         data = json.load(file)
         file.close()
         lentas = []
