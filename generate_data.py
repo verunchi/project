@@ -47,6 +47,16 @@ lentas = [
     'Лента №6'
 ]
 
+datchik_num = [
+    '№1',
+    '№2',
+    '№3',
+    '№4',
+    '№5',
+    '№6',
+    '№7',
+]
+
 data = {}
 
 
@@ -57,11 +67,29 @@ data = {}
 # 4. Скопировать массив датчиков, отсортировать в рандомном порядке
 # 5. Сгенерировать рандомное число от 1 до 4, с помощью которого мы выберем наши датчики
 # 6. Цикл, который сделает столько шагов, сколько датчиков
-# 7. Сгенерировать рандомное число от 1 до 5, сколько конкретно датчиков нужного вида будет
+# 7. Сгенерировать рандомное число от 1 до 7, сколько конкретно датчиков нужного вида будет
 # 8. Цикл, который сделает столько шагов, сколько датчиков вида сгенерировалось
 # 9. Цикл, который пройдет по всем датам
+
 # 10. Цикл, который сгенерирует 20 значений для каждой даты. Значения от -20 до 20.
 
 for ceh in cehi:
     if ceh not in data:
         data[ceh] = {}
+        l = random.randint(1,6)
+        for i in range(l):
+            data[ceh][lentas[i]] = {}
+            random.shuffle(datchiki)
+            d = random.randint(1,4)
+            for x in range(d):
+                data[ceh][lentas[i]][datchiki[x]] = {}
+                d_num =random.randint(1,6)
+                for z in range(d_num):
+                    data[ceh][lentas[i]][datchiki[x]][datchik_num[z]] = {}
+                    for date in dates:
+                        data[ceh][lentas[i]][datchiki[x]][datchik_num[z]][date] = []
+                        for w in range(20):
+                            value = random.randint(-20, 20)
+                            data[ceh][lentas[i]][datchiki[x]][datchik_num[z]][date].append(value)
+
+file = open
